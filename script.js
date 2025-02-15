@@ -5,42 +5,63 @@ const numero = [];
 let linhas = '';
 
 form.addEventListener('submit', function(e) {
-    e.preventDefault(); // Evita recarregar a página
+    e.preventDefault();
 
-    if (validarEntrada()) {
+    const validacao = validarEntrada();
+    
+    if (validacao === "valido") {
         addLinha();
         attTabela();
-        document.getElementById('mensagem-sucesso').style.display = 'block';
-
-        // Esconde a mensagem após 3 segundos
-        setTimeout(() => {
-            document.getElementById('mensagem-sucesso').style.display = 'none';
-        }, 3000);
+        exibirMensagem("✅ Cadastrado com sucesso!", "sucesso", "./imagens/okay.png");
+    } else {
+        const iconeErro = "./imagens/error.png"; // Ícone de erro
+        exibirMensagem(validacao, "erro", iconeErro);
     }
 });
 
-// Função para validar os dados
+// Função para validar os dados e retornar mensagens específicas
 function validarEntrada() {
     const inputNomeUsuario = document.getElementById('nome-usuario').value.trim();
     const inputDddUsuario = document.getElementById('ddd-usuario').value.trim();
     const inputTelefoneUsuario = document.getElementById('telefone-usuario').value.trim();
 
     if (inputNomeUsuario === '' || inputDddUsuario === '' || inputTelefoneUsuario === '') {
-        alert("⚠️ Todos os campos devem ser preenchidos!");
-        return false;
+        return "⚠️ Todos os campos devem ser preenchidos!";
     }
 
     if (!/^\d{2}$/.test(inputDddUsuario)) {
-        alert("⚠️ O DDD deve ter exatamente 2 números.");
-        return false;
+        return "⚠️ DDD inválido! Deve ter exatamente 2 números.";
     }
 
     if (!/^\d{9}$/.test(inputTelefoneUsuario)) {
-        alert("⚠️ O telefone deve ter exatamente 9 números.");
-        return false;
+        return "⚠️ Número inválido! Deve ter exatamente 9 números.";
     }
 
-    return true; // Se passou por todas as validações, retorna verdadeiro
+    return "valido"; // Se tudo estiver correto, retorna "valido"
+}
+
+// Exibir mensagem dinâmica com ícone
+function exibirMensagem(texto, tipo, iconeSrc) {
+    const mensagemDiv = document.getElementById('mensagem');
+    const iconeMensagem = document.getElementById('icone-mensagem');
+    const textoMensagem = document.getElementById('texto-mensagem');
+
+    textoMensagem.innerText = texto;
+    mensagemDiv.className = tipo; // Define a classe CSS (sucesso ou erro)
+
+    if (iconeSrc) {
+        iconeMensagem.src = iconeSrc;
+        iconeMensagem.style.display = "block"; // Exibe o ícone
+    } else {
+        iconeMensagem.style.display = "none"; // Esconde o ícone se não houver
+    }
+
+    mensagemDiv.style.display = 'flex'; // Exibe a mensagem
+
+    // Esconde a mensagem após 3 segundos
+    setTimeout(() => {
+        mensagemDiv.style.display = 'none';
+    }, 3000);
 }
 
 function addLinha(){
@@ -52,7 +73,6 @@ function addLinha(){
     ddd.push(inputDddUsuario);
     numero.push(inputTelefoneUsuario);
 
-    // Criando nova linha para a tabela
     let linha = "<tr>";
     linha += `<td>${inputNomeUsuario}</td>`;
     linha += `<td>${inputDddUsuario}</td>`;
@@ -61,7 +81,6 @@ function addLinha(){
 
     linhas += linha;
 
-    // Limpar os campos após o cadastro
     document.getElementById('nome-usuario').value = '';
     document.getElementById('ddd-usuario').value = '';
     document.getElementById('telefone-usuario').value = '';

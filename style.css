@@ -101,3 +101,35 @@ table td img{
     right: 10px;
     padding: 10px 20px;
 }
+
+#mensagem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Espaço entre o ícone e o texto */
+    font-weight: bold;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.sucesso {
+    color: green;
+    background-color: #d4edda;
+    border: 2px solid green;
+}
+
+.erro {
+    color: red;
+    background-color: #f8d7da;
+    border: 2px solid red;
+}
+
+#icone-mensagem {
+    width: 24px;
+    height: 24px;
+}
